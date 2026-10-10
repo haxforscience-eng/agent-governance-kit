@@ -28,5 +28,6 @@ Date: 9 October 2026 (America/New_York). Initial reference release: 0.1.0.
 - Rejected approval and execution attempts emit bounded, metadata-only audit events.
 - Approval storage fields are checked against signed claims at execution, not trusted on their own.
 - Audit verification is checked before a new execution reservation.
+- CI uses official action commits verified against their current release tags, Node 24 runtimes, a fixed Ubuntu 24.04 runner, read-only repository contents and no retained checkout credentials. Release pins require periodic review.
 
 These corrections reflect local testing, not an independent security audit. Further findings and changes belong in this record.
