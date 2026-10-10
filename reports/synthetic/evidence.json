@@ -1,0 +1,814 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "project": "Agent Governance Kit",
+  "generated_by": "Python reference gate v0.1.0",
+  "scenarios": [
+    {
+      "id": "scenario-1",
+      "title": "Bounded discovery",
+      "description": "Read synthetic cloud inventory within an explicit mandate.",
+      "intent": {
+        "agent_id": "cloud-advisor",
+        "requester_id": "synthetic-operator",
+        "tool": "inventory.read",
+        "resource": "cloud://synthetic-account/compute/service-a",
+        "environment": "sandbox",
+        "classification": "internal",
+        "estimated_cost_cents": 25,
+        "destination": null
+      },
+      "decision": {
+        "outcome": "allow",
+        "reasons": [
+          "WITHIN_MANDATE"
+        ],
+        "required_roles": [],
+        "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+        "intent_digest": "2030a6a6a9fcd46576f952468818d44f7888858af20d286d05c8e75f291bd57d"
+      },
+      "approvals": [],
+      "execution": {
+        "request_id": "a7c20bf6ede14133de8e42f72920fbfd",
+        "status": "completed",
+        "result": {
+          "synthetic": true,
+          "operation": "inventory.read",
+          "message": "Fixture adapter completed; no external side effects."
+        }
+      },
+      "adapter_calls": 1,
+      "replay_blocked": true
+    },
+    {
+      "id": "scenario-2",
+      "title": "Controlled change",
+      "description": "Create a staging remediation ticket after the business owner approves.",
+      "intent": {
+        "agent_id": "cloud-advisor",
+        "requester_id": "synthetic-operator",
+        "tool": "ticket.create",
+        "resource": "cloud://synthetic-account/compute/service-a",
+        "environment": "staging",
+        "classification": "internal",
+        "estimated_cost_cents": 25,
+        "destination": null
+      },
+      "decision": {
+        "outcome": "review",
+        "reasons": [
+          "HUMAN_REVIEW_REQUIRED"
+        ],
+        "required_roles": [
+          "owner"
+        ],
+        "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+        "intent_digest": "7e4bd73f1d6552eb17202b7768d2503406a637ef3d58e9c1b88f2d0cc4363c00"
+      },
+      "approvals": [
+        "business-owner"
+      ],
+      "execution": {
+        "request_id": "d166d0b069bbe65a9883ce47ff6cfd5d",
+        "status": "completed",
+        "result": {
+          "synthetic": true,
+          "operation": "ticket.create",
+          "message": "Fixture adapter completed; no external side effects."
+        }
+      },
+      "adapter_calls": 1,
+      "replay_blocked": true
+    },
+    {
+      "id": "scenario-3",
+      "title": "Production intervention",
+      "description": "A production change requires both the business owner and risk officer.",
+      "intent": {
+        "agent_id": "cloud-advisor",
+        "requester_id": "synthetic-operator",
+        "tool": "cloud.change",
+        "resource": "cloud://synthetic-account/compute/service-a",
+        "environment": "production",
+        "classification": "internal",
+        "estimated_cost_cents": 25,
+        "destination": null
+      },
+      "decision": {
+        "outcome": "review",
+        "reasons": [
+          "HUMAN_REVIEW_REQUIRED"
+        ],
+        "required_roles": [
+          "owner",
+          "risk"
+        ],
+        "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+        "intent_digest": "9c7405c908822fd36efe827d9650bc26abade5908d166703f353c200a5148c4e"
+      },
+      "approvals": [
+        "business-owner",
+        "risk-officer"
+      ],
+      "execution": {
+        "request_id": "e6eda96501d754c292e4c5140962b2b0",
+        "status": "completed",
+        "result": {
+          "synthetic": true,
+          "operation": "cloud.change",
+          "message": "Fixture adapter completed; no external side effects."
+        }
+      },
+      "adapter_calls": 1,
+      "replay_blocked": true
+    },
+    {
+      "id": "scenario-4",
+      "title": "Unapproved production action",
+      "description": "One approval cannot satisfy two independent roles.",
+      "intent": {
+        "agent_id": "cloud-advisor",
+        "requester_id": "synthetic-operator",
+        "tool": "cloud.change",
+        "resource": "cloud://synthetic-account/compute/service-a",
+        "environment": "production",
+        "classification": "internal",
+        "estimated_cost_cents": 25,
+        "destination": null
+      },
+      "decision": {
+        "outcome": "review",
+        "reasons": [
+          "HUMAN_REVIEW_REQUIRED"
+        ],
+        "required_roles": [
+          "owner",
+          "risk"
+        ],
+        "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+        "intent_digest": "9c7405c908822fd36efe827d9650bc26abade5908d166703f353c200a5148c4e"
+      },
+      "approvals": [
+        "business-owner"
+      ],
+      "execution": {
+        "status": "blocked",
+        "reason": "Missing valid independent approval roles"
+      },
+      "adapter_calls": 0,
+      "replay_blocked": null
+    },
+    {
+      "id": "scenario-5",
+      "title": "Unexpected destination",
+      "description": "An export destination outside the exact egress allowlist is denied.",
+      "intent": {
+        "agent_id": "cloud-advisor",
+        "requester_id": "synthetic-operator",
+        "tool": "evidence.export",
+        "resource": "cloud://synthetic-account/compute/service-a",
+        "environment": "sandbox",
+        "classification": "internal",
+        "estimated_cost_cents": 25,
+        "destination": "https://untrusted.example.net/receive"
+      },
+      "decision": {
+        "outcome": "deny",
+        "reasons": [
+          "EGRESS_NOT_ALLOWED"
+        ],
+        "required_roles": [],
+        "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+        "intent_digest": "4de4223b13e03e8eb9a4d800da57f2a002314c3d52be63394c77423a19625bd2"
+      },
+      "approvals": [],
+      "execution": {
+        "status": "blocked",
+        "reason": "Request is not pending; replay is refused"
+      },
+      "adapter_calls": 0,
+      "replay_blocked": null
+    },
+    {
+      "id": "scenario-6",
+      "title": "Privilege expansion",
+      "description": "A known agent attempts an unregistered shell tool.",
+      "intent": {
+        "agent_id": "cloud-advisor",
+        "requester_id": "synthetic-operator",
+        "tool": "shell.execute",
+        "resource": "cloud://synthetic-account/compute/service-a",
+        "environment": "sandbox",
+        "classification": "internal",
+        "estimated_cost_cents": 25,
+        "destination": null
+      },
+      "decision": {
+        "outcome": "deny",
+        "reasons": [
+          "TOOL_NOT_REGISTERED",
+          "TOOL_NOT_GRANTED"
+        ],
+        "required_roles": [],
+        "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+        "intent_digest": "261a4120a1c42888b117d705aa760bb4752f5f02818218b9c6d449e26d348d78"
+      },
+      "approvals": [],
+      "execution": {
+        "status": "blocked",
+        "reason": "Request is not pending; replay is refused"
+      },
+      "adapter_calls": 0,
+      "replay_blocked": null
+    },
+    {
+      "id": "scenario-7",
+      "title": "Sensitive data boundary",
+      "description": "Restricted data exceeds the agent's confidential ceiling.",
+      "intent": {
+        "agent_id": "cloud-advisor",
+        "requester_id": "synthetic-operator",
+        "tool": "inventory.read",
+        "resource": "cloud://synthetic-account/compute/service-a",
+        "environment": "sandbox",
+        "classification": "restricted",
+        "estimated_cost_cents": 25,
+        "destination": null
+      },
+      "decision": {
+        "outcome": "deny",
+        "reasons": [
+          "CLASSIFICATION_EXCEEDS_GRANT"
+        ],
+        "required_roles": [],
+        "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+        "intent_digest": "3460037f90916f57b1abb5c1b81698b4f6c18464affc28c8458827399b4a5b11"
+      },
+      "approvals": [],
+      "execution": {
+        "status": "blocked",
+        "reason": "Request is not pending; replay is refused"
+      },
+      "adapter_calls": 0,
+      "replay_blocked": null
+    },
+    {
+      "id": "scenario-8",
+      "title": "Budget boundary",
+      "description": "An invocation exceeds the database-lifetime reserved cost cap.",
+      "intent": {
+        "agent_id": "cloud-advisor",
+        "requester_id": "synthetic-operator",
+        "tool": "inventory.read",
+        "resource": "cloud://synthetic-account/compute/service-a",
+        "environment": "sandbox",
+        "classification": "internal",
+        "estimated_cost_cents": 1001,
+        "destination": null
+      },
+      "decision": {
+        "outcome": "deny",
+        "reasons": [
+          "BUDGET_EXCEEDED"
+        ],
+        "required_roles": [],
+        "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+        "intent_digest": "cc1cf3f6dc938c738da8501dd9a473efe7e0cfef29009b4fc94a286b9bba268e"
+      },
+      "approvals": [],
+      "execution": {
+        "status": "blocked",
+        "reason": "Request is not pending; replay is refused"
+      },
+      "adapter_calls": 0,
+      "replay_blocked": null
+    },
+    {
+      "id": "scenario-9",
+      "title": "Emergency intervention",
+      "description": "An operator stop prevents new reservations, including approved work.",
+      "intent": {
+        "agent_id": "cloud-advisor",
+        "requester_id": "synthetic-operator",
+        "tool": "inventory.read",
+        "resource": "cloud://synthetic-account/compute/service-a",
+        "environment": "sandbox",
+        "classification": "internal",
+        "estimated_cost_cents": 25,
+        "destination": null
+      },
+      "decision": {
+        "outcome": "deny",
+        "reasons": [
+          "EMERGENCY_STOP"
+        ],
+        "required_roles": [],
+        "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+        "intent_digest": "2030a6a6a9fcd46576f952468818d44f7888858af20d286d05c8e75f291bd57d"
+      },
+      "approvals": [],
+      "execution": {
+        "status": "blocked",
+        "reason": "Request is not pending; replay is refused"
+      },
+      "adapter_calls": 0,
+      "replay_blocked": null
+    }
+  ],
+  "evidence": {
+    "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+    "audit_head": "581026675aa0239202d363441a572f10b5be2e3c12721e7aee37d0166f599fe5",
+    "entries": [
+      {
+        "body": {
+          "details": {
+            "agent_id": "cloud-advisor",
+            "decision": {
+              "intent_digest": "2030a6a6a9fcd46576f952468818d44f7888858af20d286d05c8e75f291bd57d",
+              "outcome": "allow",
+              "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+              "reasons": [
+                "WITHIN_MANDATE"
+              ],
+              "required_roles": []
+            },
+            "request_id": "a7c20bf6ede14133de8e42f72920fbfd"
+          },
+          "event": "request_evaluated",
+          "sequence": 1,
+          "timestamp": 1800000000
+        },
+        "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mac": "eb2779e4727e7df0af24725ced12baad478b977ef2a7b7dfdceee8e55915da28"
+      },
+      {
+        "body": {
+          "details": {
+            "intent_digest": "2030a6a6a9fcd46576f952468818d44f7888858af20d286d05c8e75f291bd57d",
+            "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+            "request_id": "a7c20bf6ede14133de8e42f72920fbfd",
+            "reserved_cost_cents": 25
+          },
+          "event": "execution_reserved",
+          "sequence": 2,
+          "timestamp": 1800000000
+        },
+        "previous": "eb2779e4727e7df0af24725ced12baad478b977ef2a7b7dfdceee8e55915da28",
+        "mac": "8a38913ff14c283116d85683c07c88d06eb8e7bb67b814f185aa920abf85b91a"
+      },
+      {
+        "body": {
+          "details": {
+            "request_id": "a7c20bf6ede14133de8e42f72920fbfd"
+          },
+          "event": "execution_completed",
+          "sequence": 3,
+          "timestamp": 1800000000
+        },
+        "previous": "8a38913ff14c283116d85683c07c88d06eb8e7bb67b814f185aa920abf85b91a",
+        "mac": "457e1a5209836e7d6aaed69399aac0418860917cec6cd322919293abc14f2ec9"
+      },
+      {
+        "body": {
+          "details": {
+            "reason": "Request is not pending; replay is refused",
+            "request_id": "a7c20bf6ede14133de8e42f72920fbfd"
+          },
+          "event": "execution_refused",
+          "sequence": 4,
+          "timestamp": 1800000000
+        },
+        "previous": "457e1a5209836e7d6aaed69399aac0418860917cec6cd322919293abc14f2ec9",
+        "mac": "c04035afd681fbfd74937a3c62057bbabe29827ed648b1710b824c0be864712d"
+      },
+      {
+        "body": {
+          "details": {
+            "agent_id": "cloud-advisor",
+            "decision": {
+              "intent_digest": "7e4bd73f1d6552eb17202b7768d2503406a637ef3d58e9c1b88f2d0cc4363c00",
+              "outcome": "review",
+              "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+              "reasons": [
+                "HUMAN_REVIEW_REQUIRED"
+              ],
+              "required_roles": [
+                "owner"
+              ]
+            },
+            "request_id": "d166d0b069bbe65a9883ce47ff6cfd5d"
+          },
+          "event": "request_evaluated",
+          "sequence": 5,
+          "timestamp": 1800000000
+        },
+        "previous": "c04035afd681fbfd74937a3c62057bbabe29827ed648b1710b824c0be864712d",
+        "mac": "5a7d742cf54e06ffa1552ddb69ce6ac94d2e27d5725ec8cfc3a319b4f9ebd9de"
+      },
+      {
+        "body": {
+          "details": {
+            "approver": "business-owner",
+            "expires_at": 1800000300,
+            "request_id": "d166d0b069bbe65a9883ce47ff6cfd5d",
+            "role": "owner"
+          },
+          "event": "approval_recorded",
+          "sequence": 6,
+          "timestamp": 1800000000
+        },
+        "previous": "5a7d742cf54e06ffa1552ddb69ce6ac94d2e27d5725ec8cfc3a319b4f9ebd9de",
+        "mac": "4e0007d959538e8ca4e1b6b0334edd160fe2b762aefb88765337993ec75d0d68"
+      },
+      {
+        "body": {
+          "details": {
+            "intent_digest": "7e4bd73f1d6552eb17202b7768d2503406a637ef3d58e9c1b88f2d0cc4363c00",
+            "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+            "request_id": "d166d0b069bbe65a9883ce47ff6cfd5d",
+            "reserved_cost_cents": 25
+          },
+          "event": "execution_reserved",
+          "sequence": 7,
+          "timestamp": 1800000000
+        },
+        "previous": "4e0007d959538e8ca4e1b6b0334edd160fe2b762aefb88765337993ec75d0d68",
+        "mac": "596aff19e0d1fb6e7db44039f243f2ee89211dfabdd070b4fd0e24e1ef0904b9"
+      },
+      {
+        "body": {
+          "details": {
+            "request_id": "d166d0b069bbe65a9883ce47ff6cfd5d"
+          },
+          "event": "execution_completed",
+          "sequence": 8,
+          "timestamp": 1800000000
+        },
+        "previous": "596aff19e0d1fb6e7db44039f243f2ee89211dfabdd070b4fd0e24e1ef0904b9",
+        "mac": "5952d11c34170ebf00352168f8d4ee4691cfccb2df53f8d1163902dcff552da6"
+      },
+      {
+        "body": {
+          "details": {
+            "reason": "Request is not pending; replay is refused",
+            "request_id": "d166d0b069bbe65a9883ce47ff6cfd5d"
+          },
+          "event": "execution_refused",
+          "sequence": 9,
+          "timestamp": 1800000000
+        },
+        "previous": "5952d11c34170ebf00352168f8d4ee4691cfccb2df53f8d1163902dcff552da6",
+        "mac": "4ef35616d6847a7101159766e8d926023e8b25fc1586fab0dfd7a07b66e8f6fb"
+      },
+      {
+        "body": {
+          "details": {
+            "agent_id": "cloud-advisor",
+            "decision": {
+              "intent_digest": "9c7405c908822fd36efe827d9650bc26abade5908d166703f353c200a5148c4e",
+              "outcome": "review",
+              "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+              "reasons": [
+                "HUMAN_REVIEW_REQUIRED"
+              ],
+              "required_roles": [
+                "owner",
+                "risk"
+              ]
+            },
+            "request_id": "e6eda96501d754c292e4c5140962b2b0"
+          },
+          "event": "request_evaluated",
+          "sequence": 10,
+          "timestamp": 1800000000
+        },
+        "previous": "4ef35616d6847a7101159766e8d926023e8b25fc1586fab0dfd7a07b66e8f6fb",
+        "mac": "357f74de3ed004ae66f2e303f9f69a9e457899e0fde59f27335a1d555e28459d"
+      },
+      {
+        "body": {
+          "details": {
+            "approver": "business-owner",
+            "expires_at": 1800000300,
+            "request_id": "e6eda96501d754c292e4c5140962b2b0",
+            "role": "owner"
+          },
+          "event": "approval_recorded",
+          "sequence": 11,
+          "timestamp": 1800000000
+        },
+        "previous": "357f74de3ed004ae66f2e303f9f69a9e457899e0fde59f27335a1d555e28459d",
+        "mac": "e7ba9486de861eb2330a0af307712e23ca4edd2b79ff64f6552642cc63b716e5"
+      },
+      {
+        "body": {
+          "details": {
+            "approver": "risk-officer",
+            "expires_at": 1800000300,
+            "request_id": "e6eda96501d754c292e4c5140962b2b0",
+            "role": "risk"
+          },
+          "event": "approval_recorded",
+          "sequence": 12,
+          "timestamp": 1800000000
+        },
+        "previous": "e7ba9486de861eb2330a0af307712e23ca4edd2b79ff64f6552642cc63b716e5",
+        "mac": "6b6efc398ce6cce0376acc78fec6e8f3537ff510f4d8841e02ed4486c0a133c8"
+      },
+      {
+        "body": {
+          "details": {
+            "intent_digest": "9c7405c908822fd36efe827d9650bc26abade5908d166703f353c200a5148c4e",
+            "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+            "request_id": "e6eda96501d754c292e4c5140962b2b0",
+            "reserved_cost_cents": 25
+          },
+          "event": "execution_reserved",
+          "sequence": 13,
+          "timestamp": 1800000000
+        },
+        "previous": "6b6efc398ce6cce0376acc78fec6e8f3537ff510f4d8841e02ed4486c0a133c8",
+        "mac": "d3ec0d94265638e39ef3a633ea089edfce11fb1dd1e274bd8da2c72f9e0f5ab9"
+      },
+      {
+        "body": {
+          "details": {
+            "request_id": "e6eda96501d754c292e4c5140962b2b0"
+          },
+          "event": "execution_completed",
+          "sequence": 14,
+          "timestamp": 1800000000
+        },
+        "previous": "d3ec0d94265638e39ef3a633ea089edfce11fb1dd1e274bd8da2c72f9e0f5ab9",
+        "mac": "fb6f462032337e40a7f61dc2b77affcc232587db13584012b93bb86e22daa03b"
+      },
+      {
+        "body": {
+          "details": {
+            "reason": "Request is not pending; replay is refused",
+            "request_id": "e6eda96501d754c292e4c5140962b2b0"
+          },
+          "event": "execution_refused",
+          "sequence": 15,
+          "timestamp": 1800000000
+        },
+        "previous": "fb6f462032337e40a7f61dc2b77affcc232587db13584012b93bb86e22daa03b",
+        "mac": "7e2ffe88df947605c35e654fcd3bba549fb293f53b528cb22440b629316a0008"
+      },
+      {
+        "body": {
+          "details": {
+            "agent_id": "cloud-advisor",
+            "decision": {
+              "intent_digest": "9c7405c908822fd36efe827d9650bc26abade5908d166703f353c200a5148c4e",
+              "outcome": "review",
+              "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+              "reasons": [
+                "HUMAN_REVIEW_REQUIRED"
+              ],
+              "required_roles": [
+                "owner",
+                "risk"
+              ]
+            },
+            "request_id": "af758e76bb2dc6a4897153828751f40c"
+          },
+          "event": "request_evaluated",
+          "sequence": 16,
+          "timestamp": 1800000000
+        },
+        "previous": "7e2ffe88df947605c35e654fcd3bba549fb293f53b528cb22440b629316a0008",
+        "mac": "bc1a1d5a261fe70257f5109fd92ca9cd0be08a7206fc7446de1798dc483f5eef"
+      },
+      {
+        "body": {
+          "details": {
+            "approver": "business-owner",
+            "expires_at": 1800000300,
+            "request_id": "af758e76bb2dc6a4897153828751f40c",
+            "role": "owner"
+          },
+          "event": "approval_recorded",
+          "sequence": 17,
+          "timestamp": 1800000000
+        },
+        "previous": "bc1a1d5a261fe70257f5109fd92ca9cd0be08a7206fc7446de1798dc483f5eef",
+        "mac": "2f908e8a2d3c05ffec86db87fd480aed1c3dc2e37edcc0332c02294f1b5af43e"
+      },
+      {
+        "body": {
+          "details": {
+            "reason": "Missing valid independent approval roles",
+            "request_id": "af758e76bb2dc6a4897153828751f40c"
+          },
+          "event": "execution_refused",
+          "sequence": 18,
+          "timestamp": 1800000000
+        },
+        "previous": "2f908e8a2d3c05ffec86db87fd480aed1c3dc2e37edcc0332c02294f1b5af43e",
+        "mac": "22d8edc50fa9883a43eb258f89925214745aa4846f9170b6fd43855285b13a0d"
+      },
+      {
+        "body": {
+          "details": {
+            "agent_id": "cloud-advisor",
+            "decision": {
+              "intent_digest": "4de4223b13e03e8eb9a4d800da57f2a002314c3d52be63394c77423a19625bd2",
+              "outcome": "deny",
+              "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+              "reasons": [
+                "EGRESS_NOT_ALLOWED"
+              ],
+              "required_roles": []
+            },
+            "request_id": "1098ef521b6c04ac9a176897fd6185f0"
+          },
+          "event": "request_evaluated",
+          "sequence": 19,
+          "timestamp": 1800000000
+        },
+        "previous": "22d8edc50fa9883a43eb258f89925214745aa4846f9170b6fd43855285b13a0d",
+        "mac": "d979c5659221c38e1d5bd86d97deec33bbe8a58ce7353e2d1a314bc8db4b096d"
+      },
+      {
+        "body": {
+          "details": {
+            "reason": "Request is not pending; replay is refused",
+            "request_id": "1098ef521b6c04ac9a176897fd6185f0"
+          },
+          "event": "execution_refused",
+          "sequence": 20,
+          "timestamp": 1800000000
+        },
+        "previous": "d979c5659221c38e1d5bd86d97deec33bbe8a58ce7353e2d1a314bc8db4b096d",
+        "mac": "4d949f033b8fd224e370d3816ef62e099a5dafa8902b5aa66f7d6664b2076325"
+      },
+      {
+        "body": {
+          "details": {
+            "agent_id": "cloud-advisor",
+            "decision": {
+              "intent_digest": "261a4120a1c42888b117d705aa760bb4752f5f02818218b9c6d449e26d348d78",
+              "outcome": "deny",
+              "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+              "reasons": [
+                "TOOL_NOT_REGISTERED",
+                "TOOL_NOT_GRANTED"
+              ],
+              "required_roles": []
+            },
+            "request_id": "ca33334da7f4f36a1f16bd9a2bda4d66"
+          },
+          "event": "request_evaluated",
+          "sequence": 21,
+          "timestamp": 1800000000
+        },
+        "previous": "4d949f033b8fd224e370d3816ef62e099a5dafa8902b5aa66f7d6664b2076325",
+        "mac": "f6bf19fd544ba6eb939ea0d85dd293c6908dd588db382b18a1bd94b8d884cc3b"
+      },
+      {
+        "body": {
+          "details": {
+            "reason": "Request is not pending; replay is refused",
+            "request_id": "ca33334da7f4f36a1f16bd9a2bda4d66"
+          },
+          "event": "execution_refused",
+          "sequence": 22,
+          "timestamp": 1800000000
+        },
+        "previous": "f6bf19fd544ba6eb939ea0d85dd293c6908dd588db382b18a1bd94b8d884cc3b",
+        "mac": "a54192e49d0c4a0caff2c1509bda7a38c294c02a14a5d9d7decc3154dd9dc281"
+      },
+      {
+        "body": {
+          "details": {
+            "agent_id": "cloud-advisor",
+            "decision": {
+              "intent_digest": "3460037f90916f57b1abb5c1b81698b4f6c18464affc28c8458827399b4a5b11",
+              "outcome": "deny",
+              "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+              "reasons": [
+                "CLASSIFICATION_EXCEEDS_GRANT"
+              ],
+              "required_roles": []
+            },
+            "request_id": "5d2089f6639fe4f34b92f3e2e5df03ce"
+          },
+          "event": "request_evaluated",
+          "sequence": 23,
+          "timestamp": 1800000000
+        },
+        "previous": "a54192e49d0c4a0caff2c1509bda7a38c294c02a14a5d9d7decc3154dd9dc281",
+        "mac": "05b1ec7dd602e392f13c1b8d49aeecad73838fdba397327be88765f07bae96f2"
+      },
+      {
+        "body": {
+          "details": {
+            "reason": "Request is not pending; replay is refused",
+            "request_id": "5d2089f6639fe4f34b92f3e2e5df03ce"
+          },
+          "event": "execution_refused",
+          "sequence": 24,
+          "timestamp": 1800000000
+        },
+        "previous": "05b1ec7dd602e392f13c1b8d49aeecad73838fdba397327be88765f07bae96f2",
+        "mac": "1ce98ac20159d0d419c40b50a2d260bbae3d0054c915f62742b9f239bbf96fe8"
+      },
+      {
+        "body": {
+          "details": {
+            "agent_id": "cloud-advisor",
+            "decision": {
+              "intent_digest": "cc1cf3f6dc938c738da8501dd9a473efe7e0cfef29009b4fc94a286b9bba268e",
+              "outcome": "deny",
+              "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+              "reasons": [
+                "BUDGET_EXCEEDED"
+              ],
+              "required_roles": []
+            },
+            "request_id": "4d0b57b8aa8b941b07543df799f3c58c"
+          },
+          "event": "request_evaluated",
+          "sequence": 25,
+          "timestamp": 1800000000
+        },
+        "previous": "1ce98ac20159d0d419c40b50a2d260bbae3d0054c915f62742b9f239bbf96fe8",
+        "mac": "4f1834cf5a4d688c9d734550f728bdfd6c621be841a31b87cad646a4cec0af22"
+      },
+      {
+        "body": {
+          "details": {
+            "reason": "Request is not pending; replay is refused",
+            "request_id": "4d0b57b8aa8b941b07543df799f3c58c"
+          },
+          "event": "execution_refused",
+          "sequence": 26,
+          "timestamp": 1800000000
+        },
+        "previous": "4f1834cf5a4d688c9d734550f728bdfd6c621be841a31b87cad646a4cec0af22",
+        "mac": "323b601166787706d06e3fb5212c44a698a353b487e9a00a26786157bf8cc47a"
+      },
+      {
+        "body": {
+          "details": {
+            "operator": "synthetic-operator",
+            "stopped": true
+          },
+          "event": "emergency_stop_changed",
+          "sequence": 27,
+          "timestamp": 1800000000
+        },
+        "previous": "323b601166787706d06e3fb5212c44a698a353b487e9a00a26786157bf8cc47a",
+        "mac": "6cb5bc3490bcdb95583b89af1d326bc63113717cb9aa7bab1f644ad9c05648a1"
+      },
+      {
+        "body": {
+          "details": {
+            "agent_id": "cloud-advisor",
+            "decision": {
+              "intent_digest": "2030a6a6a9fcd46576f952468818d44f7888858af20d286d05c8e75f291bd57d",
+              "outcome": "deny",
+              "policy_digest": "bc296f68a487732c39946d8cac425f4d7706ac49148f8af4e74ad6be23c168f9",
+              "reasons": [
+                "EMERGENCY_STOP"
+              ],
+              "required_roles": []
+            },
+            "request_id": "1abdb9c6c17006112983e70971f759ee"
+          },
+          "event": "request_evaluated",
+          "sequence": 28,
+          "timestamp": 1800000000
+        },
+        "previous": "6cb5bc3490bcdb95583b89af1d326bc63113717cb9aa7bab1f644ad9c05648a1",
+        "mac": "c10719b9b24f953b3e142adbae768e1cbd930c86e7286a18b07e62786aa40374"
+      },
+      {
+        "body": {
+          "details": {
+            "reason": "Request is not pending; replay is refused",
+            "request_id": "1abdb9c6c17006112983e70971f759ee"
+          },
+          "event": "execution_refused",
+          "sequence": 29,
+          "timestamp": 1800000000
+        },
+        "previous": "c10719b9b24f953b3e142adbae768e1cbd930c86e7286a18b07e62786aa40374",
+        "mac": "581026675aa0239202d363441a572f10b5be2e3c12721e7aee37d0166f599fe5"
+      }
+    ],
+    "reserved_cost_cents": 75,
+    "emergency_stop": true
+  },
+  "verification": {
+    "valid": true,
+    "audit_head": "581026675aa0239202d363441a572f10b5be2e3c12721e7aee37d0166f599fe5",
+    "externally_anchored": true
+  },
+  "summary": {
+    "scenarios": 9,
+    "completed": 3,
+    "blocked": 6
+  }
+}
