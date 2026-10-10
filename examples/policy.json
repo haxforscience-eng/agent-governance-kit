@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "policy_id": "synthetic-enterprise-v1",
+  "approval_ttl_seconds": 300,
+  "max_cost_cents": 1000,
+  "tools": {
+    "inventory.read": {"effect": "read"},
+    "ticket.create": {"effect": "write"},
+    "cloud.change": {"effect": "admin"},
+    "evidence.export": {"effect": "export"}
+  },
+  "agents": {
+    "cloud-advisor": {
+      "tools": ["inventory.read", "ticket.create", "cloud.change", "evidence.export"],
+      "resources": ["cloud://synthetic-account"],
+      "environments": ["sandbox", "staging", "production"],
+      "max_classification": "confidential",
+      "egress_hosts": ["evidence.example.com"]
+    },
+    "service-assistant": {
+      "tools": ["inventory.read", "ticket.create"],
+      "resources": ["tickets://synthetic-service"],
+      "environments": ["sandbox", "staging"],
+      "max_classification": "internal",
+      "egress_hosts": []
+    }
+  },
+  "approvers": {"business-owner": "owner", "risk-officer": "risk", "alternate-owner": "owner"}
+}
