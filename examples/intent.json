@@ -1,0 +1,9 @@
+{
+  "agent_id": "cloud-advisor",
+  "requester_id": "synthetic-operator",
+  "tool": "cloud.change",
+  "resource": "cloud://synthetic-account/compute/service-a",
+  "environment": "production",
+  "classification": "internal",
+  "estimated_cost_cents": 40
+}
